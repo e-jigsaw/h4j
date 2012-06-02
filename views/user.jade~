@@ -1,0 +1,9 @@
+!!! 5
+html
+	head
+		meta(charset="utf-8")
+		title Phettwee
+	body
+		h1 /user dayo!
+		p Hello!
+		p =session.user_profile.screen_name
