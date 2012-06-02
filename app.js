@@ -46,6 +46,7 @@ app.get('/', function(req, res){
 });
 
 app.get("/user", function(req, res) {
+  console.log(req.session.user_profile.screen_name);
   res.render("user", {
     layout: false
   });
