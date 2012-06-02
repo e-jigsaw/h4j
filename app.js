@@ -4,12 +4,20 @@ var oauth = new (require("oauth").OAuth)(
     process.env.TWITTER_CONSUMER_KEY,
     process.env.TWITTER_CONSUMER_SECRET,
     "1.0",
-    "http://phettwee.herokuapp.com/callback", // atode
+    "http://phettwee.herokuapp.com/callback",
     "HMAC-SHA1"
 );
 var express = require('express');
 var twitter = require("twitter");
 var mongoose = require("mongoose");
+var schema = mongoose.Schema;
+var setting = new schema({
+    screen_name: String,
+    access_token: String,
+    access_token_secret: String,
+    pref_code: String
+});
+var model = mongoose.model("settings", setting);
 
 var app = module.exports = express.createServer();
 
@@ -75,7 +83,7 @@ app.get("/callback", function(req, res) {
                     req.session.oauth.access_token = oauth_access_token;
                     req.session.oauth.access_token_secret = oauth_access_token_secret;
                     req.session.user_profile = results;
-                    res.redirect("/user");
+                    res.redirect("http://localhost/user");
                 }
             }
         );
