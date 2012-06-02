@@ -94,3 +94,9 @@ app.get("/callback", function(req, res) {
 app.listen(process.env.PORT||3000, function() {
   console.log("Listening on port:"+app.address().port);
 });
+
+app.get("/search", function(req, res) {
+  res.render("search", {
+    layout: false
+  });
+});
