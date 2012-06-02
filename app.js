@@ -11,6 +11,7 @@ var express = require('express');
 var twitter = require("twitter");
 var mongoose = require("mongoose");
 var schema = mongoose.Schema;
+var http = require('http');
 var setting = new schema({
     screen_name: String,
     access_token: String,
@@ -96,7 +97,38 @@ app.listen(process.env.PORT||3000, function() {
 });
 
 app.get("/search", function(req, res) {
-  res.render("search", {
-    layout: false
+  var qres;
+  
+  model.find({}, function(err, docs) {
+    console.log("size:" + docs.length);
+    for (var i=0, size=docs.length; i<size; ++i) {
+      console.log("elm:" + docs[i]['pref_code']);
+      qres = docs[i]['pref_code'];
+
+     u = "http://api.r-assistance.go.jp/v1/api.svc/searchSupportInformations?appkey=0&maxcount=1&localgovcodes=" + qres;
+
+var u = {
+        host: "api.r-assistance.go.jp",
+        port: 80,
+        path: "/v1/api.svc/searchSupportInformations?appkey=0&maxcount=1&localgovcodes=" + qres
+    };
+  var d;
+
+	http.get(u, function(r) {
+	      console.log("u");
+
+        r.on("data", function(data) {
+            d += data.toString();
+        }).on("end", function() {
+      console.log("aaa");
+     res.render('search', {
+      layout: false,
+      title: 'Search',
+      qres: d
+});
+    });
   });
+}
+});
+
 });
